@@ -1,13 +1,14 @@
-const { body } = require("express-validator");
+const { validationResult } = require("express-validator");
 
-exports.loginValidation = [
-  body("email")
-    .notEmpty()
-    .withMessage("Email is required")
-    .isEmail()
-    .withMessage("Invalid email"),
+module.exports = (req, res, next) => {
+  const errors = validationResult(req);
 
-  body("password")
-    .notEmpty()
-    .withMessage("Password is required")
-];
+  if (!errors.isEmpty()) {
+    return res.status(400).json({
+      success: false,
+      errors: errors.array()
+    });
+  }
+
+  next();
+};
