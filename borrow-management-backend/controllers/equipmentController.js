@@ -54,13 +54,72 @@ exports.getEquipments = async (
   res
 ) => {
   try {
+
+    let {
+      page = 1,
+      limit = 10,
+      search = "",
+      status,
+      sortBy = "createdAt",
+      sortOrder = "desc"
+    } = req.query;
+
+    page = parseInt(page);
+    limit = parseInt(limit);
+
+    const query = {};
+
+    // Search
+    if (search) {
+      query.$or = [
+        {
+          equipmentName: {
+            $regex: search,
+            $options: "i"
+          }
+        },
+        {
+          category: {
+            $regex: search,
+            $options: "i"
+          }
+        },
+        {
+          serialNumber: {
+            $regex: search,
+            $options: "i"
+          }
+        }
+      ];
+    }
+
+    // Filter by status
+    if (status) {
+      query.status = status;
+    }
+
+    const totalRecords =
+      await Equipment.countDocuments(query);
+
     const equipments =
-      await Equipment.find().sort({
-        createdAt: -1
-      });
+      await Equipment.find(query)
+        .sort({
+          [sortBy]:
+            sortOrder === "asc" ? 1 : -1
+        })
+        .skip((page - 1) * limit)
+        .limit(limit);
 
     return res.status(200).json({
       success: true,
+      pagination: {
+        currentPage: page,
+        pageSize: limit,
+        totalRecords,
+        totalPages: Math.ceil(
+          totalRecords / limit
+        )
+      },
       count: equipments.length,
       data: equipments
     });

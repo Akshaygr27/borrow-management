@@ -1,4 +1,4 @@
-const { body } = require("express-validator");
+const { body, query } = require("express-validator");
 
 exports.createEquipmentValidation = [
   body("equipmentName")
@@ -56,4 +56,26 @@ exports.updateEquipmentValidation = [
       "Unavailable",
       "Maintenance"
     ])
+];
+
+exports.getEquipmentValidation = [
+  query("page")
+    .optional()
+    .isInt({ min: 1 }),
+
+  query("limit")
+    .optional()
+    .isInt({ min: 1 }),
+
+  query("status")
+    .optional()
+    .isIn([
+      "Available",
+      "Unavailable",
+      "Maintenance"
+    ]),
+
+  query("sortOrder")
+    .optional()
+    .isIn(["asc", "desc"])
 ];

@@ -13,7 +13,9 @@ const validationMiddleware =
 
 const {
   createEquipmentValidation,
-  updateEquipmentValidation
+  updateEquipmentValidation,
+  getEquipmentValidation
+
 } = require(
   "../validations/equipmentValidation"
 );
@@ -37,6 +39,7 @@ router.post(
 router.get(
   "/",
   authMiddleware,
+  getEquipmentValidation,
   equipmentController.getEquipments
 );
 
