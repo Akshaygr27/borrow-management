@@ -30,6 +30,11 @@ const borrowTransactionSchema =
         type: Date,
         required: true
       },
+      
+      returnDate: {
+        type: Date,
+        default: null
+      },
 
       status: {
         type: String,

@@ -14,6 +14,7 @@ const authRouter = require('./routes/auth')
 const equipmentRouter = require("./routes/equipment");
 const borrowerRouter = require("./routes/borrower");
 const borrowTransactionRouter = require("./routes/borrowTransaction");
+const returnRouter = require("./routes/return");
 
 var app = express();
 
@@ -29,5 +30,6 @@ app.use('/api/auth', authRouter);
 app.use("/api/equipments", equipmentRouter);
 app.use("/api/borrowers", borrowerRouter);
 app.use("/api/borrow-transactions", borrowTransactionRouter);
+app.use("/api/returns", returnRouter);
 
 module.exports = app;
