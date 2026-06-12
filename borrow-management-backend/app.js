@@ -3,6 +3,7 @@ var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 require('dotenv').config()
+var cors = require('cors');
 const db = require('./config/db')
 
 //mongoDB Connection
@@ -18,6 +19,13 @@ const returnRouter = require("./routes/return");
 const dashboardRouter = require("./routes/dashboard");
 
 var app = express();
+
+var corsOptions = {
+  origin: 'http://localhost:5173', 
+  optionsSuccessStatus: 200 
+};
+
+app.use(cors(corsOptions));
 
 app.use(logger('dev'));
 app.use(express.json());
